@@ -1,0 +1,12 @@
+framework: mocha
+src_files:
+  - 'test/**/*.coffee'
+  - 'app/**/*.js'
+serve_files:
+  - 'test/**/*.coffee'
+  - 'app/**/*.js'
+launchers:
+  node:
+    command: 'mocha --compilers coffee:coffee-script test/*/*.coffee -R spec'
+    protoco: 'tap'
+launch_in_dev: [node]

@@ -1,0 +1,8 @@
+.status(ng-repeat="status in params.status")
+  hr
+  .status(class="{{status.name}}")
+    h4 {{status.name | uppercase}}
+    table
+      tr.table.table-bordered.table-striped.table-hover.table-condensed(ng-repeat="(key, value) in status.properties")
+        td {{key}}
+        td {{value}}
