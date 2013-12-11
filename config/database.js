@@ -2,7 +2,7 @@ module.exports = {
   development: {
     driver: "memory"
   },
-  functional01:
+  func01:
   {
     driver: "memory"
   },

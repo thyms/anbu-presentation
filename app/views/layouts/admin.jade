@@ -1,0 +1,15 @@
+!!! 5
+html(ng-app='admin-app')
+  head
+    block head
+      include ../templates/header
+      link(href='/stylesheets/app/admin.css', media='screen', rel='stylesheet', type='text/css')
+      script(src='/javascripts/app/admin.js', type='text/javascript')
+  body
+    block navigation
+      include ../templates/navigation
+
+    .container
+      block content
+
+      include ../templates/footer

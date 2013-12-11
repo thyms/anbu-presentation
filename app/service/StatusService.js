@@ -5,25 +5,21 @@ var YAML = require('yamljs')
 var statusService = function () {
   var statusFunctions = {
     application: function () {
-      return [
-        {
+      return [{
           name: "application",
           properties: {
             applicationVersion: applicationProperties.applicationVersion,
             commitHash: applicationProperties.commitHash
           }
-        }
-      ];
+        }];
     },
     health: function() {
-      return [
-        {
+      return [{
           name: "health",
           properties: {
             up: 'OK'
           }
-        }
-      ];
+        }];
     }
   }
 

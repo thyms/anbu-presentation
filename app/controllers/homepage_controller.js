@@ -1,3 +1,3 @@
 action('show', function(){
-  render({title: 'Welcome to anbu Presentation'});
+  render({title: 'Welcome to anbu presentationn'});
 });

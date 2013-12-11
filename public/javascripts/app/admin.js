@@ -32,6 +32,6 @@
     }
   };
 
-  app.controller("StatusController", controllers.StatusController);
+  app.controller("StatusController", ['$scope', '$routeParams', 'Status', controllers.StatusController]);
 
 }).call(this);

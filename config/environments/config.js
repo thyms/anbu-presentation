@@ -1,7 +1,7 @@
 var config = {
   development: {
   },
-  functional01: {
+  func01: {
   },
   qa01: {
   },

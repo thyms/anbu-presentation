@@ -1,2 +1,6 @@
-body
-  h1 Welcome...
+extends ../layouts/application
+block content
+  .input-group
+    input.location.form-control.input-lg(type='text', placeholder='Enter your town/postcode')
+    span.input-group-btn
+      button.btn.btn-lg.btn-primary(type='button') OK

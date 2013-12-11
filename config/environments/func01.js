@@ -3,7 +3,7 @@ var config = require('./config');
 module.exports = function (compound) {
   var app = compound.app;
 
-  var environment = 'functional01';
+  var environment = 'func01';
   app.configure(environment, function () {
     app.enable('watch');
     app.disable('assets timestamps');
