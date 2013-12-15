@@ -10,7 +10,7 @@ test-app-ci:
 	npm -d install
 	./node_modules/.bin/grunt test
 
-setup-app:
+setup-project:
 	npm install
 	git remote add func01  git@heroku.com:anbu-presentation-func01.git
 	git remote add qa01    git@heroku.com:anbu-presentation-qa01.git
