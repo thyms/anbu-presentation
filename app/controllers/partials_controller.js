@@ -1,4 +1,4 @@
 action('show', function(){
-  layout('')
+  layout('');
   render(req.params.partial);
 });

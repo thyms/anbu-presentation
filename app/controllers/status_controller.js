@@ -7,7 +7,7 @@ var actions = {
   show: function() {
     send({status: statusService.getStatus(req.params.id)});
   }
-}
+};
 
 action('index', actions.index);
 action('show', actions.show);

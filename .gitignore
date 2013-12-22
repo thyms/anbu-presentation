@@ -10,6 +10,7 @@ node_modules
 *.iml
 *.ipr
 *.iws
+coverage
 
 .DS_Store
 scrapbook.txt

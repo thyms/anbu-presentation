@@ -1,6 +1,4 @@
-var q = require('q')
-  , YAML = require('yamljs')
-  , exec = q.denodeify(require('child_process').exec)
+var YAML = require('yamljs')
   , rootDir = require('path').dirname(process.mainModule.filename)
   , applicationProperties = YAML.load(rootDir +'/application_properties.yaml');
 

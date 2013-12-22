@@ -4,22 +4,45 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    testFiles: {
-      regex: 'test/**/*.coffee'
-    },
-    concat: {
-      options: {
-        stripBanners: true
+    files: {
+      src: {
+        app: {
+          regex: 'app/**/*.js',
+          config: {
+            regex: 'config/**/*.js'
+          },
+          db: {
+            regex: 'db/**/*.js'
+          }
+        },
+        config: {
+          gruntFile: 'Gruntfile.js',
+          karmaFile: 'karma.conf.js'
+        },
+        assets: {
+          regex: 'app/assets/**/*.coffee'
+        },
+        public: {
+          javascript: {
+            output: 'public/javascripts/vendor-app.min.js',
+            app: {
+              output: 'public/javascripts/app.js',
+              regex: 'public/javascripts/app/**/*.js'
+            },
+            vendor: {
+              output: 'public/javascripts/vendor.js',
+              regex: 'public/javascripts/vendor/**/*.js'
+            }
+          }
+        }
       },
-      dist: {
-        src: ['public/javascripts/app/**/*.js', 'public/javascripts/vendor/**/*.js'],
-        dest: 'public/javascripts/app.js'
-      }
-    },
-    uglify: {
-      dist: {
-        src: '<%= concat.dist.dest %>',
-        dest: 'public/javascripts/app.min.js'
+      test: {
+        frontend: {
+          regex: 'test/frontend/**/*.coffee'
+        },
+        backend: {
+          regex: 'test/backend/**/*.coffee'
+        }
       }
     },
     jshint: {
@@ -40,52 +63,49 @@ module.exports = function(grunt) {
         globals: {}
       },
       gruntfile: {
-        src: 'Gruntfile.js'
+        src: '<%= files.src.config.gruntFile %>'
       },
-      app: {
-        src: ['app/**/*.js', 'config/**/*.js', 'db/**/*.js']
-      },
-      publics: {
-        files: { src: 'public/javascripts/app/*.js' },
-        options: {
-          browser: true,
-          undef: true
-        }
+      backend: {
+        src: ['<%= files.src.app.regex %>', '<%= files.src.app.config.regex %>', '<%= files.src.app.db.regex %>']
       }
     },
     coffeelint: {
-      assets: { src: ['app/assets/**/*.coffee'] },
-      tests: { src: ['<%= testFiles.regex %>'] }
+      options: {
+        'max_line_length': {
+          'level': 'ignore'
+        }
+      },
+      frontend: { src: ['<%= files.src.assets.regex %>', '<%= files.test.frontend.regex %>'] },
+      backend: { src: ['<%= files.test.backend.regex %>'] }
     },
-    watch: {
-      gruntfile: {
-        files: '<%= jshint.gruntfile.src %>',
-        tasks: ['jshint:gruntfile']
+    concat: {
+      options: {
+        stripBanners: true
       },
-      app: {
-        files: '<%= jshint.app.src %>',
-        tasks: ['jshint:app']
-      },
-      publics: {
-        files: '<%= jshint.publics.files.src %>',
-        tasks: ['jshint:publics']
-      },
-      assets: {
-        files: '<%= coffeelint.assets.src %>',
-        tasks: ['coffeelint:assets']
-      },
-      tests: {
-        files: '<%= testFiles.regex %>',
-        tasks: ['coffeelint:tests', 'mochacli:spec']
+      app_and_vendor: {
+        files: {
+          '<%= files.src.public.javascript.app.output %>': ['<%= files.src.public.javascript.app.regex %>'],
+          '<%= files.src.public.javascript.vendor.output %>': ['<%= files.src.public.javascript.vendor.regex %>']
+        }
       }
+    },
+    uglify: {
+      dist: {
+        src: ['<%= files.src.public.javascript.vendor.output %>', '<%= files.src.public.javascript.app.output %>'],
+        dest: '<%= files.src.public.javascript.output %>'
+      }
+    },
+    clean: {
+      frontend: ['<%= files.src.public.javascript.vendor.output %>', '<%= files.src.public.javascript.app.output %>'],
+      backend: ['<%= files.src.public.javascript.vendor.output %>', '<%= files.src.public.javascript.app.output %>']
     },
     mochacli: {
       options: {
-        files: '<%= testFiles.regex %>'
+        files: '<%= files.test.backend.regex %>'
       },
       spec: {
         options: {
-          reporter: 'spec',
+          reporter: 'progress',
           compilers: ['coffee:coffee-script']
         }
       },
@@ -94,6 +114,25 @@ module.exports = function(grunt) {
           reporter: 'tap',
           compilers: ['coffee:coffee-script']
         }
+      }
+    },
+    karma: {
+      test: {
+        configFile: '<%= files.src.config.karmaFile %>'
+      }
+    },
+    watch: {
+      gruntfile: {
+        files: '<%= jshint.gruntfile.src %>',
+        tasks: ['jshint:gruntfile']
+      },
+      backend: {
+        files: ['<%= jshint.backend.src %>', '<%= coffeelint.backend.src %>'],
+        tasks: ['jshint:backend', 'coffeelint:backend', 'test:backend']
+      },
+      frontend: {
+        files: ['<%= coffeelint.frontend.src %>'],
+        tasks: ['coffeelint:frontend', 'test:frontend']
       }
     }
   });
@@ -105,10 +144,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-coffeelint');
   grunt.loadNpmTasks('grunt-mocha-cli');
+  grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
-  grunt.registerTask('default', ['jshint', 'coffeelint', 'concat', 'uglify']);
+  grunt.registerTask('build', ['jshint', 'coffeelint', 'concat', 'uglify', 'clean']);
 
   var testTask = ['mochacli:spec'];
   if (env !== 'development') { testTask = ['mochacli:tap']; }
-  grunt.registerTask('test', testTask);
+  grunt.registerTask('test:frontend', ['karma:test']);
+  grunt.registerTask('test:backend', testTask);
+  grunt.registerTask('test', ['test:frontend', 'test:backend']);
 };

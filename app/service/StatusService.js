@@ -21,7 +21,7 @@ var statusService = function () {
           }
         }];
     }
-  }
+  };
 
   var service = {
     getStatus: function (section) {
@@ -29,9 +29,9 @@ var statusService = function () {
       if (section) {
         status = statusFunctions[section] ? statusFunctions[section].apply() : [{name: 'Unknown section'}];
       } else {
-        for (var section in statusFunctions) {
-          if (statusFunctions.hasOwnProperty(section)) {
-            status  = status.concat(statusFunctions[section].apply())
+        for (var subSection in statusFunctions) {
+          if (statusFunctions.hasOwnProperty(subSection)) {
+            status  = status.concat(statusFunctions[subSection].apply());
           }
         }
       }
@@ -41,6 +41,6 @@ var statusService = function () {
   };
 
   return service;
-}
+};
 
-module.exports = statusService()
+module.exports = statusService();
