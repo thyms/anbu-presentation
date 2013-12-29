@@ -18,7 +18,8 @@
     "restler": "~2.0.1",
     "yamljs": "0.1.4",
     "q": "0.9.6",
-    "strong-agent": "latest"
+    "strong-agent": "latest",
+    "jugglingdb-mongodb": "0.0.4-3"
   },
   "devDependencies": {
     "co-generators": "*",
