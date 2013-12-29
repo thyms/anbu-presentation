@@ -2,20 +2,24 @@ module.exports = {
   development: {
     driver: "memory"
   },
-  func01:
-  {
-    driver: "memory"
+  func01: {
+    driver: "mongodb"
+    , url:    process.env.MONGODB_URL
   },
   qa01: {
-    driver: "memory"
+    driver: "mongodb"
+    , url:    process.env.MONGODB_URL
   },
   demo01: {
-    driver: "memory"
+    driver: "mongodb"
+    , url:    process.env.MONGODB_URL
   },
   stage01: {
-    driver: "memory"
+    driver: "mongodb"
+    , url:    process.env.MONGODB_URL
   },
   prod01: {
-    driver: "memory"
+    driver: "mongodb"
+    , url:    process.env.MONGODB_URL
   }
 };
